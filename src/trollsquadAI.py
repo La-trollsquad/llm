@@ -6,20 +6,24 @@ from PIL import Image
 class TrollsquadAI:
     def __init__(self):
         pass
-
+    
     def text_to_image(self, payload):
+        """send a request to the automatic 1111 api with the query parameters to create an image from text
 
+        Args:
+            payload (dict): The query parameters of the request passed to the automatic 1111 api
+        """
         response = requests.post(url='http://127.0.0.1:7860/sdapi/v1/txt2img', json=payload)
         response = response.json()
 
         return TrollsquadAI.save_image_from_response(response)
 
     def image_to_image(self, payload):
+        """send a request to the automatic 1111 api with the query parameters to create an image from one or many images 
 
-        with open("black and white trollface.png", 'rb') as file:
-            image_data = file.read()
-            encoded_image = base64.b64encode(image_data).decode('utf-8')
-        payload['init_images']=[encoded_image]
+        Args:
+            payload (dict): The query parameters of the request passed to the automatic 1111 api
+        """
         response = requests.post(url='http://127.0.0.1:7860/sdapi/v1/img2img', json=payload)
         response = response.json()
 
@@ -27,6 +31,11 @@ class TrollsquadAI:
     
     @staticmethod
     def save_image_from_response(response):
+        """save the images of the automatic 1111 api call response 
+
+        Args:
+            response (dict): response from the automatic 1111 api call
+        """
         try:
             i=1
             for image in response['images']:
