@@ -4,6 +4,9 @@ import base64
 from PIL import Image
 
 class TrollsquadAI:
+
+    base_url = "http://127.0.0.1:7860"
+
     def __init__(self):
         pass
     
@@ -13,7 +16,7 @@ class TrollsquadAI:
         Args:
             payload (dict): The query parameters of the request passed to the automatic 1111 api
         """
-        response = requests.post(url='http://127.0.0.1:7860/sdapi/v1/txt2img', json=payload)
+        response = requests.post(url=f'{TrollsquadAI.base_url}/sdapi/v1/txt2img', json=payload)
         response = response.json()
 
         return TrollsquadAI.save_image_from_response(response)
@@ -24,7 +27,7 @@ class TrollsquadAI:
         Args:
             payload (dict): The query parameters of the request passed to the automatic 1111 api
         """
-        response = requests.post(url='http://127.0.0.1:7860/sdapi/v1/img2img', json=payload)
+        response = requests.post(url=f'{TrollsquadAI.base_url}/sdapi/v1/img2img', json=payload)
         response = response.json()
 
         return TrollsquadAI.save_image_from_response(response)
