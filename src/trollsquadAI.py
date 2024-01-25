@@ -1,10 +1,8 @@
 import os
 import replicate
+from dotenv import load_dotenv
 
 class TrollsquadAI:
-
-    base_url = "http://127.0.0.1:7860"
-    
 
     def __init__(self):
         pass
@@ -16,7 +14,8 @@ class TrollsquadAI:
         Args:
             prompt (str): The user's input prompt.
         """
-        os.environ['REPLICATE_API_TOKEN'] = 'r8_EumTGGkohLlx9R8V5mfdTVbZaUVFIxS4FFN7p'
+    
+        load_dotenv()
         replicate_api = os.getenv('REPLICATE_API_TOKEN')
 
         if replicate_api is None or not (replicate_api.startswith('r8_') and len(replicate_api) == 40):
@@ -25,13 +24,14 @@ class TrollsquadAI:
         # paramètres
         selected_model = 'Llama2-13B'
         llm = 'a16z-infra/llama13b-v2-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5'
-        temperature = 0.1
-        top_p = 0.9
-        max_length = 200
+        temperature = 0.72
+        top_p = 0.73   
+        max_length = 1000
+        repetition_penalty = 1
 
-        return self.generate_llama2_response(replicate_api, llm, prompt, temperature, top_p, max_length) 
+        return self.generate_llama2_response(llm, prompt, temperature, top_p, max_length, repetition_penalty) 
 
-    def generate_llama2_response(self, replicate_api, llm, prompt, temperature, top_p, max_length):
+    def generate_llama2_response(self, llm, prompt, temperature, top_p, max_length, repetition_penalty):
         """
         Generates a response using the Llama2 chatbot based on the provided prompt.
 
@@ -44,11 +44,11 @@ class TrollsquadAI:
             max_length (int): Maximum length for the generated response
         """
 
-        string_dialogue = f"Transformes ce titre en une petite histoire, réponds seulement avec l'histoire et parle en français. Le titre est : {prompt}"
+        string_dialogue = f"Titre: {prompt} --- Rédiges ce titre en une petite histoire, ta réponse dois seulement contenir l'histoire absolument dans la langue Française qui donne le contexte sans répéter le titre et sans moral."
 
         output = replicate.run(llm,
                                input={"prompt": string_dialogue,
                                       "temperature": temperature, "top_p": top_p, "max_length": max_length,
-                                      "repetition_penalty": 1})
+                                      "repetition_penalty": repetition_penalty})
 
         return output

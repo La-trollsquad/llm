@@ -8,6 +8,5 @@ instance = TrollsquadAI()
 def textToImage():    
     return instance.prompt_to_text("un ecureuil qui grimpe un arbre")
 
-
 if __name__== "__main__":
     app.run(debug=True)
