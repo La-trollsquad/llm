@@ -59,7 +59,7 @@ class TrollsquadAI:
 
         return output
       
-      def text_to_image(self, payload):
+    def text_to_image(self, payload):
         """send a request to the automatic 1111 api with the query parameters to create an image from text
 
         Args:
