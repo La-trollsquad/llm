@@ -64,6 +64,7 @@ class TrollsquadAI:
         Args:
             payload (dict): The query parameters of the request passed to the automatic 1111 api
         """
+
         response = requests.post(url=f'{TrollsquadAI.base_url}/sdapi/v1/txt2img', json=payload)
         response = response.json()
 
@@ -75,24 +76,28 @@ class TrollsquadAI:
         Args:
             payload (dict): The query parameters of the request passed to the automatic 1111 api
         """
+
         response = requests.post(url=f'{TrollsquadAI.base_url}/sdapi/v1/img2img', json=payload)
         response = response.json()
 
         return TrollsquadAI.save_image_from_response(response)
     
     def helsinki_translator(self, prompt, langSource, langTarget):
-        """translate the prompt with helsinki
+        """translate the prompt with helsinki, list of all avaiable language : https://github.com/Helsinki-NLP/Opus-MT-train/tree/master/models
 
         Args:
             prompt (str) : text to translate
+            langSource (str : Code ISO 639-1) : input language
+            langTarget (str : Code ISO 639-1) : output language
         """
+
         model_id = f"Helsinki-NLP/opus-mt-{langSource}-{langTarget}"
+        
+        model = MarianMTModel.from_pretrained(model_id)
         tokenizer = MarianTokenizer.from_pretrained(model_id)
 
-        model = MarianMTModel.from_pretrained(model_id)
-
-        src_text = str(prompt)
-        translated = model.generate(**tokenizer(src_text, return_tensors="pt", padding=True))
+        prompt_str = str(prompt)
+        translated = model.generate(**tokenizer(prompt_str, return_tensors="pt", padding=True))
         res = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
 
         return res[0]
@@ -104,6 +109,7 @@ class TrollsquadAI:
         Args:
             response (dict): response from the automatic 1111 api call
         """
+
         try:
             i=1
             for image in response['images']:
@@ -113,5 +119,3 @@ class TrollsquadAI:
             return "images created", 200
         except:
             return response, 500
-
-
