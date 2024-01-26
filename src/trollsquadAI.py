@@ -51,11 +51,13 @@ class TrollsquadAI:
             max_length (int): Maximum length for the generated response
         """
 
-        output = replicate.run(llm,
+        response = replicate.run(llm,
                                input={"prompt": prompt,
                                       "temperature": temperature, "top_p": top_p, "max_length": max_length,
                                       "repetition_penalty": repetition_penalty})
-
+        output=""
+        for s in response:
+            outpu += s   
         return output
       
     def text_to_image(self, payload):
