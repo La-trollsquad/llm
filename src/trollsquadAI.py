@@ -6,6 +6,8 @@ import replicate
 from PIL import Image
 from dotenv import load_dotenv
 from transformers import MarianMTModel, MarianTokenizer
+from os.path import exists
+
 
 class TrollsquadAI:
 
@@ -57,7 +59,7 @@ class TrollsquadAI:
                                       "repetition_penalty": repetition_penalty})
         output=""
         for s in response:
-            outpu += s   
+            output += s   
         return output
       
     def text_to_image(self, payload):
@@ -116,6 +118,8 @@ class TrollsquadAI:
             i=1
             for image in response['images']:
                 image = Image.open(io.BytesIO(base64.b64decode(image)))
+                while exists(f'output{i}.png') :
+                    i+=1
                 image.save(f'output{i}.png')
                 i+=1
             return "images created", 200
