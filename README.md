@@ -55,6 +55,13 @@ set COMMANDLINE_ARGS=--api
 
 Pour plus d'informations : [Installation de Stable diffusion](https://github.com/AUTOMATIC1111/stable-diffusion-webui#installation-and-running)
 
+### Helsinki
+
+Helsinki est une IA de traduction de texte. Pour l'utiliser il faut installer transformers avec pip.
+``` 
+pip install transformers
+```
+
 ## API
 
 Notre application propose une API locale qui permet de faire des requêtes.
