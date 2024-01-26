@@ -9,6 +9,11 @@ instance = TrollsquadAI()
 def promptToText():    
     return instance.prompt_to_text(request.args.to_dict()["prompt"])
 
+@app.route("/promptTranslator")
+def promptTranslator():
+    dct = request.args.to_dict()    
+    return instance.helsinki_translator(dct["prompt"], dct["langSource"], dct["langTarget"])
+
 @app.route("/textToImage")
 def textToImage():    
     return instance.text_to_image(request.args.to_dict())
@@ -17,6 +22,7 @@ def textToImage():
 def imageToImage():    
     return instance.image_to_image(request.args.to_dict())
 
-
+instance.helsinki_translator
 if __name__== "__main__":
+    
     app.run(debug=True)

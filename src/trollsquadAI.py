@@ -5,6 +5,7 @@ import requests
 import replicate
 from PIL import Image
 from dotenv import load_dotenv
+from transformers import MarianMTModel, MarianTokenizer
 
 class TrollsquadAI:
 
@@ -40,7 +41,7 @@ class TrollsquadAI:
     def generate_llama2_response(self, llm, prompt, temperature, top_p, max_length, repetition_penalty):
         """
         Generates a response using the Llama2 chatbot based on the provided prompt.
-
+        
         Args:
             replicate_api (str): replicate API token
             llm (str): llama2 model identifier
@@ -49,7 +50,7 @@ class TrollsquadAI:
             top_p (float): Top-p parameter for Llama2
             max_length (int): Maximum length for the generated response
         """
-        
+
         output = replicate.run(llm,
                                input={"prompt": prompt,
                                       "temperature": temperature, "top_p": top_p, "max_length": max_length,
@@ -79,6 +80,23 @@ class TrollsquadAI:
 
         return TrollsquadAI.save_image_from_response(response)
     
+    def helsinki_translator(self, prompt, langSource, langTarget):
+        """translate the prompt with helsinki
+
+        Args:
+            prompt (str) : text to translate
+        """
+        model_id = f"Helsinki-NLP/opus-mt-{langSource}-{langTarget}"
+        tokenizer = MarianTokenizer.from_pretrained(model_id)
+
+        model = MarianMTModel.from_pretrained(model_id)
+
+        src_text = str(prompt)
+        translated = model.generate(**tokenizer(src_text, return_tensors="pt", padding=True))
+        res = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
+
+        return res[0]
+    
     @staticmethod
     def save_image_from_response(response):
         """save the images of the automatic 1111 api call response 
@@ -95,4 +113,5 @@ class TrollsquadAI:
             return "images created", 200
         except:
             return response, 500
+
 
