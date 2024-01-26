@@ -7,7 +7,7 @@ instance = TrollsquadAI()
 
 @app.route("/promptToText")
 def promptToText():    
-    return instance.prompt_to_text("Un ecureuil qui grimpe un arbre")
+    return instance.prompt_to_text(request.args.to_dict()["prompt"])
 
 @app.route("/textToImage")
 def textToImage():    

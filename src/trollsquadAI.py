@@ -49,11 +49,9 @@ class TrollsquadAI:
             top_p (float): Top-p parameter for Llama2
             max_length (int): Maximum length for the generated response
         """
-
-        string_dialogue = f"Titre: {prompt} --- Rédiges ce titre en une petite histoire, ta réponse dois seulement contenir l'histoire absolument dans la langue Française qui donne le contexte sans répéter le titre et sans moral."
-
+        
         output = replicate.run(llm,
-                               input={"prompt": string_dialogue,
+                               input={"prompt": prompt,
                                       "temperature": temperature, "top_p": top_p, "max_length": max_length,
                                       "repetition_penalty": repetition_penalty})
 
