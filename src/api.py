@@ -22,7 +22,7 @@ def textToImage():
 def imageToImage():    
     return instance.image_to_image(request.args.to_dict())
 
-instance.helsinki_translator
+
 if __name__== "__main__":
     
     app.run(debug=True)
